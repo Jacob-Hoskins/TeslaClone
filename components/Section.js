@@ -1,26 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
+import Fade from 'react-reveal/Fade';
 
 
 //props are just parameters you can set when calling the component
 
 function Section(props) {
-    
+    {/* in the parameter area where props is you can either put props or the name of each 
+        and not use props. in every JSX parameters*/}
     return (
         <Wrap bgImage={props.backgroundImg}>
-            <ItemText>
-                <h1>{props.title}</h1>
-                <p>{props.description}</p>
-            </ItemText>
+            <Fade bottom>
+                <ItemText>
+                    <h1>{props.title}</h1>
+                    <p>{props.description}</p>
+                </ItemText>
+            </Fade>
             <Buttons>
-                <ButtonGroup>
-                    <LeftButton>
-                        {props.leftBtnText}
-                    </LeftButton>
-                    <RightButton>
-                        {props.rightBtnText}
-                    </RightButton>
-                </ButtonGroup>
+                <Fade bottom>
+                    <ButtonGroup>
+                        <LeftButton>
+                            {props.leftBtnText}
+                        </LeftButton>
+                        {/* if right button does exsist it will center the left button */}
+                        { props.rightBtnText && 
+                            <RightButton>
+                                {props.rightBtnText}
+                            </RightButton>
+                        }
+                    </ButtonGroup>
+                </Fade>
                 <DownArrow src='/Pictures/down-arrow.svg' />
             </Buttons>
         </Wrap>
@@ -30,6 +39,7 @@ function Section(props) {
 export default Section
 
 const Wrap = styled.div`
+    z-index: 10;
     width: 100vw;
     height: 100vh;
     background-size: cover;
@@ -43,6 +53,7 @@ const Wrap = styled.div`
 `
 
 const ItemText = styled.div`
+    z-index: -1;
     padding-top: 15vh;
     text-align: center;
 `
