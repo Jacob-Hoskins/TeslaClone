@@ -1,29 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
+import { selectCars } from '../features/car/carSlice';
+import { useSelector } from 'react-redux';
+
+//to use the slice you have to import useSelector which is a hook
 
 function Header() {
+
+    const [burgerStatus, setBurgerStatus] = useState(false);
+    const cars = useSelector(selectCars)
+    console.log(cars)
+
     return (
         <Container>
             <a>
                 <img src='../Pictures/logo.svg' />
             </a>
             <Menu>
-                <a href="#"> Model S</a>
+                {/* this will  automatically load the header car names through the array
+                    instead of typing them all out like commented out below
+                */}
+                {cars && cars.map((car, index) =>(
+                    <a href="#"> {car}</a>
+                ))}
+                {/* <a href="#"> Model S</a>
                 <a href="#"> Model 3</a>
                 <a href="#"> Model X</a>
-                <a href="#"> Model Y</a>
+                <a href="#"> Model Y</a> */}
             </Menu>
             <RightMenu>
                 <a href="#">Shop</a>
                 <a href="#">Tesla Account</a>
             </RightMenu>
-            <CustomMenu />
-            <BurgerNav>
+            {/* show calls the burgerStatus variable in css and on click activates it */}
+            <CustomMenu onClick={() => setBurgerStatus(true)}/>
+            <BurgerNav show={burgerStatus}>
                 <CloseWrapper>
-                    <CustomClose />
+                    {/* will set burger status to false closing nav bar */}
+                    <CustomClose onClick={()=> setBurgerStatus(false)}/>
                 </CloseWrapper>
+                {cars && cars.map((car, index) =>(
+                    <li key={index}><a href="#">{car}</a></li>
+                ))}
                 <li><a href="#">Exsisting Inventory</a></li>
                 <li><a href="#">Used Inventory</a></li>
                 <li><a href="#">Trade-in</a></li>
@@ -100,6 +120,10 @@ const BurgerNav = styled.div`
     display: flex;
     flex-direction: column;
     text-align: start;
+    // if props.show is true translateX will open the nav bar
+    transform: ${props => props.show ? 'translateX(0)': 'translateX(100%)'};
+    //below lets the nav bar slowly slide open to screen
+    transition: transform 0.2s;
 
     li{
         padding: 15px 0;
